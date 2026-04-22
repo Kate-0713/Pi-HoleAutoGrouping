@@ -10,7 +10,7 @@ def get_all_clients():  # Gets a list of all known clients
     return response.json()
 
 def name_matches_prefix(name):  # Checks to see if the comment section of a client starts with a given string
-    return any(name.get("comment").startswith(prefix) for prefix in TARGET_PREFIXES)
+    return any(name.get("comment").startswith(prefix) for prefix in TARGET_CLIENT_PREFIXES)
 
 def reset_clients_with_prefixes():  # main function that performs the client sorting and sends the update request
     clients_json = get_all_clients()  # retrieves list of all known clients and stores it
@@ -50,10 +50,11 @@ if __name__ == "__main__":
         env_file = json.load(f)
     f.close()
 
-    BASE_URL = env_file.get("BASE_URL")  # URL to add api enpoints to
+    BASE_URL = env_file.get("BASE_URL")  # URL to add api endpoints to
     API_TOKEN = env_file.get("API_TOKEN")  # Pi-Hole app password
-    TARGET_PREFIXES = env_file.get("TARGET_PREFIXES")  # Prefixes to search for
-    TARGET_GROUPS = env_file.get("TARGET_GROUPS")  # Group IDs to move clients into
+    TARGET_CLIENT_PREFIXES = env_file.get("TARGET_CLIENT_PREFIXES")  # Client prefixes to search for
+    # Gets either group prefixes or group IDs
+    TARGET_GROUP_PREFIXES = env_file.get("TARGET_GROUP_PREFIXES") if env_file.get("GROUP_ID_MODE") else TARGET_GROUPS = env_file.get("TARGET_GROUPS")
 
     sid = get_auth()
     HEADERS = {"X-FTL-SID": f"{sid}", "Accept": "application/json", "Content-Type": "application/json"}
@@ -62,5 +63,5 @@ if __name__ == "__main__":
     # print(show_groups())
     # sys.exit(0)
 
-    reset_clients_with_prefixes()
+    #reset_clients_with_prefixes()
 
