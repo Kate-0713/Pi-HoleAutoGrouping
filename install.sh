@@ -22,12 +22,12 @@ echo "Creating script directory"
 mkdir -p $DEST
 cd $DEST
 echo "Directory created"
-echo "Creating Python virtual enviroment and installing dependancies"
+echo "Creating Python virtual environment and installing dependencies"
 python3 -m venv Pi-HoleAutoGrouping-venv
 source Pi-HoleAutoGrouping-venv/bin/activate
 pip install requests 
 deactivate
-echo "Virtual enviroment created"
+echo "Virtual environment created"
 echo "Downloading script files"
 curl -L -O --output-dir "$DEST" "$MAIN_URL"
 curl -L -O --output-dir "$DEST" "$CONFIG_URL"
