@@ -8,6 +8,7 @@ fi
 if [ "$(dpkg -l | awk '/python3-venv/ {print }' |wc -l)" -ge 1 ]; then
   echo "python3-venv is installed"
 else
+  apt-get update
   apt-get install python3-venv -y
 fi
 
