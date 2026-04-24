@@ -24,7 +24,7 @@ def reset_clients_with_prefixes():  # main function that performs the client sor
     for client in client_id_list:  # update client groups of every client that got moved into the second list
         response = requests.request("PUT", f"{BASE_URL}/clients/{client.get("client")}", headers=HEADERS,
                                     json={"client": f"{client.get("client")}", "name": f"{client.get("name")}",
-                                    "comment": f"{client.get("comment")}", "groups": TARGET_GROUPS})
+                                    "comment": f"{client.get("comment")}", "groups": TARGET_GROUP_IDS})
         response.raise_for_status()
 
     print("Clients with matching prefixes have been reset.")
@@ -35,13 +35,13 @@ def get_auth():  # Authenticates with Pi-Hole and gets session ID
     response.raise_for_status()
     return response.json().get("session").get("sid")
 
-def show_groups():  # Only used during testing
+def get_groups():  # Used to get a dict of group names and IDs
     response = requests.request("GET", f"{BASE_URL}/groups", headers=HEADERS, json={"password": f"{API_TOKEN}"})
     response.raise_for_status()
-    group_info_list = []
+    group_info_dict = {}
     for x in response.json().get("groups"):
-        group_info_list.append(f"{x.get("name")} , {x.get("id")}")
-    return group_info_list
+        group_info_dict[x.get("name")] = x.get("id")
+    return group_info_dict
 
 
 if __name__ == "__main__":
@@ -53,15 +53,25 @@ if __name__ == "__main__":
     BASE_URL = env_file.get("BASE_URL")  # URL to add api endpoints to
     API_TOKEN = env_file.get("API_TOKEN")  # Pi-Hole app password
     TARGET_CLIENT_PREFIXES = env_file.get("TARGET_CLIENT_PREFIXES")  # Client prefixes to search for
-    # Gets either group prefixes or group IDs
-    TARGET_GROUP_PREFIXES = env_file.get("TARGET_GROUP_PREFIXES") if env_file.get("GROUP_ID_MODE") else TARGET_GROUPS = env_file.get("TARGET_GROUPS")
+    TARGET_GROUP_PREFIXES = env_file.get("TARGET_GROUP_PREFIXES")  # Group prefixes to search for
 
-    sid = get_auth()
+    sid = get_auth()  # Authenticates with Pi-Hole API and passes session ID to HEADERS
     HEADERS = {"X-FTL-SID": f"{sid}", "Accept": "application/json", "Content-Type": "application/json"}
 
+    if env_file.get("GROUP_ID_MODE"):  # checks for GROUP_ID_MODE and changes how IDs are obtained based on result
+        TARGET_GROUP_IDS = env_file.get("TARGET_GROUP_IDS")
+    else:
+        group_name_dict = get_groups()
+        TARGET_GROUP_IDS = [y for x, y in group_name_dict.items() if x.startswith(tuple(TARGET_GROUP_PREFIXES))]
+
     # uncomment to show group IDs in console
-    # print(show_groups())
+    # print(get_groups())
     # sys.exit(0)
 
-    #reset_clients_with_prefixes()
+    reset_clients_with_prefixes()  # runs main function
+
+    response = requests.request("DELETE", f"{BASE_URL}/auth/", headers=HEADERS)  # deletes API session
+    response.raise_for_status()
+
+    sys.exit(0)
 
