@@ -35,5 +35,5 @@ curl -L -O --output-dir "$DEST" "$RUNSH_URL"
 echo "Adding script to crontab"
 (crontab -l; echo "0 20 * * * /opt/Pi-HoleAutoGrouping/run_pihole_auto_group.sh")|awk '!x[$0]++'|crontab -
 echo "Crontab added"
-echo "Script completed"
+echo "Script completed - ensure you updated details in config.json at $DEST"
 
