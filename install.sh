@@ -5,6 +5,13 @@ if [ "$(id -u)" -ne 0 ]; then
   exit 1
 fi
 
+if [ "$(dpkg -l | awk '/python3-venv/ {print }' |wc -l)" -ge 1 ]; then
+  echo "python3-venv is installed"
+else
+  apt-get install python3-venv -y
+fi
+
+
 MAIN_URL="https://raw.githubusercontent.com/Kate-0713/Pi-HoleAutoGrouping/refs/heads/main/src/main.py"
 CONFIG_URL="https://raw.githubusercontent.com/Kate-0713/Pi-HoleAutoGrouping/refs/heads/main/src/config.json"
 RUNSH_URL="https://raw.githubusercontent.com/Kate-0713/Pi-HoleAutoGrouping/refs/heads/main/src/run.sh"
