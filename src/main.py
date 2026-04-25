@@ -55,6 +55,10 @@ if __name__ == "__main__":
     TARGET_CLIENT_PREFIXES = env_file.get("TARGET_CLIENT_PREFIXES")  # Client prefixes to search for
     TARGET_GROUP_PREFIXES = env_file.get("TARGET_GROUP_PREFIXES")  # Group prefixes to search for
 
+    if BASE_URL == "" or API_TOKEN == "":
+        print("You must provide your BASE_URL and API_TOKEN.")
+        sys.exit(0)
+
     sid = get_auth()  # Authenticates with Pi-Hole API and passes session ID to HEADERS
     HEADERS = {"X-FTL-SID": f"{sid}", "Accept": "application/json", "Content-Type": "application/json"}
 

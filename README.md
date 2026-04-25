@@ -2,8 +2,7 @@
 Move Pi-Hole clients into certain groups based on a given prefix in the client comment
 
 To automatically install to /opt/ run command:
-
-```sudo curl -s https://raw.githubusercontent.com/Kate-0713/Pi-HoleAutoGrouping/refs/heads/main/install.sh | sudo bash```
+[REMOVED TEMPORARILY DUE TO ISSUES WITH INSTALL SCRIPT]
 
 This will install python3-venv if it is missing and then create the required directories and python virtual environment along with the requests module
 
