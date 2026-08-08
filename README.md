@@ -16,6 +16,10 @@ This will install python3-venv if it is missing and then create the required dir
 
 # CHANGE LOG
 
+## 2026-08-08
+### V2.0
+- The script has been rewritten in Go in order to make deployment easier as the script can be compiled to a single exe and run with the need for additional python modules and a venv. No new functionality has been added
+
 ## 2026-04-24:
 - Completed feature allowing the script to use a list of prefixes on the groups to add clients to allowing the app to be used without knowing group IDs
 - Shell scripts added to automate download and addition to crontab
