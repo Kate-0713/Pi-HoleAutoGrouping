@@ -4,7 +4,6 @@ Move Pi-Hole clients into certain groups based on a given prefix in the client c
 To automatically install to /opt/ run command:
 [REMOVED TEMPORARILY DUE TO ISSUES WITH INSTALL SCRIPT]
 
-This will install python3-venv if it is missing and then create the required directories and python virtual environment along with the requests module
 
 # TODO
 - ~~Allow matching groups against a prefix rather than just the group ID~~
